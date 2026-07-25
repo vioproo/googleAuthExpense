@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Liquid Spend - Mobile Expense Tracker (INR ₹)</title>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6366f1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Liquid Spend">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <!-- Google Identity Services SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <!-- Ambient Liquid Mesh Background Blobs -->
+  <div class="ambient-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <!-- Mobile App Container Shell -->
+  <div class="app-container">
+    
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-icon" id="logo-icon-container">✨</div>
+        <div class="brand-text">
+          <h1>Liquid Spend</h1>
+          <p class="subtitle">Smart Personal Expenses</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Google User Profile & Auth Wrapper -->
+        <div class="user-profile-wrapper">
+          <button id="user-profile-btn" class="user-profile-pill glass-btn" title="Google Account Profile">
+            <span id="user-avatar-icon" class="user-avatar-icon">👤</span>
+            <img id="user-avatar-img" class="user-avatar-img hidden" src="" alt="Profile">
+            <span class="user-name-label" id="user-name-label">Sign in</span>
+          </button>
+
+          <!-- User Profile & Sheet Status Dropdown Menu -->
+          <div id="user-dropdown" class="user-dropdown-menu glass-card hidden">
+            <div class="dropdown-user-info">
+              <div class="dropdown-avatar-container">
+                <span id="dropdown-avatar-fallback">👤</span>
+                <img id="dropdown-avatar-img" class="dropdown-avatar-img hidden" src="" alt="Avatar">
+              </div>
+              <div class="dropdown-text">
+                <span class="dropdown-name" id="dropdown-user-name">Guest User</span>
+                <span class="dropdown-email" id="dropdown-user-email">Not signed in</span>
+              </div>
+            </div>
+            
+            <hr class="glass-divider">
+            
+            <!-- Connection Status Badge inside Dropdown -->
+            <div class="dropdown-sheet-status status-offline" id="dropdown-sheet-status">
+              <span class="status-dot"></span>
+              <span class="status-text" id="dropdown-status-label">Google Sheet: Local Mode</span>
+            </div>
+
+            <div class="dropdown-actions">
+              <button id="google-signin-btn" class="primary-btn google-auth-action-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                <span>Sign in with Google</span>
+              </button>
+              <button id="dropdown-settings-btn" class="secondary-btn dropdown-action-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Sheet Settings</span>
+              </button>
+              <button id="signout-btn" class="secondary-btn danger-text hidden">Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Top Dashboard Summary Cards (100% Expense Focus) -->
+    <section class="dashboard-section">
+      <!-- Primary Focus Card (Monthly Spend) -->
+      <div class="glass-card main-summary-card">
+        <div class="card-glow"></div>
+        <div class="card-header-row">
+          <span class="card-label">Total Monthly Spend</span>
+          <span class="month-badge" id="current-month-label">July 2026</span>
+        </div>
+        <div class="amount-display">
+          <span class="currency-symbol">₹</span>
+          <span id="monthly-spend-amount" class="main-amount">0.00</span>
+        </div>
+        <div class="card-footer-info">
+          <span class="stats-badge" id="monthly-count-badge">0 transactions this month</span>
+        </div>
+      </div>
+
+      <!-- Sub-Summary Section (Today & This Year) -->
+      <div class="sub-summary-grid">
+        <div class="glass-card sub-card">
+          <div class="sub-card-icon" data-emoji="📅">📅</div>
+          <div class="sub-card-content">
+            <span class="sub-card-label">Today's Spend</span>
+            <div class="sub-card-amount">
+              <span class="sub-currency">₹</span>
+              <span id="today-spend-amount">0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card sub-card">
+          <div class="sub-card-icon" data-emoji="📊">📊</div>
+          <div class="sub-card-content">
+            <span class="sub-card-label">This Year's Spend</span>
+            <div class="sub-card-amount">
+              <span class="sub-currency">₹</span>
+              <span id="year-spend-amount">0.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs Switcher -->
+    <div class="tab-switcher glass-card">
+      <button class="tab-btn active" data-tab="add-tab">
+        <span class="tab-icon" data-emoji="➕">➕</span>
+        <span>New Expense</span>
+      </button>
+      <button class="tab-btn" data-tab="history-tab">
+        <span class="tab-icon" data-emoji="📜">📜</span>
+        <span>Activity Feed</span>
+      </button>
+      <button class="tab-btn" data-tab="analytics-tab">
+        <span class="tab-icon" data-emoji="📊">📊</span>
+        <span>Analytics</span>
+      </button>
+    </div>
+
+    <!-- Tab 1: Expense Entry Form -->
+    <div id="add-tab" class="tab-content active-tab">
+      <section class="form-section">
+        <div class="glass-card form-card">
+          <div class="card-title-row">
+            <h2>Add New Expense</h2>
+            <button type="button" id="manage-categories-btn" class="text-link-btn">+ New Category</button>
+          </div>
+
+          <form id="expense-form" autocomplete="off">
+            <!-- Date Selector -->
+            <div class="form-group">
+              <label for="expense-date">Date</label>
+              <div class="input-glass-wrapper">
+                <span class="input-icon" data-emoji="📆">📆</span>
+                <input type="date" id="expense-date" required>
+              </div>
+            </div>
+
+            <!-- Amount Field -->
+            <div class="form-group">
+              <label for="expense-amount">Amount (INR ₹)</label>
+              <div class="input-glass-wrapper amount-wrapper">
+                <span class="currency-prefix">₹</span>
+                <input type="number" id="expense-amount" step="0.01" min="0.01" placeholder="0.00" required>
+              </div>
+            </div>
+
+            <!-- Category Selector -->
+            <div class="form-group">
+              <label for="expense-category">Category</label>
+              <div class="input-glass-wrapper">
+                <select id="expense-category" required>
+                  <!-- Populated dynamically -->
+                </select>
+                <span class="select-arrow">▼</span>
+              </div>
+            </div>
+
+            <!-- Note Field -->
+            <div class="form-group">
+              <label for="expense-note">Note <span class="optional-tag">(Optional)</span></label>
+              <div class="input-glass-wrapper">
+                <span class="input-icon" data-emoji="✍️">✍️</span>
+                <input type="text" id="expense-note" placeholder="e.g. Petrol fill-up, Swiggy, Electricity..." maxlength="60">
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <button type="submit" id="add-expense-btn" class="primary-btn">
+              <span class="btn-text">Add Expense</span>
+              <span class="btn-shine"></span>
+            </button>
+          </form>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab 2: Expense Activity Feed -->
+    <div id="history-tab" class="tab-content">
+      <section class="activity-section">
+        <div class="glass-card filter-card">
+          <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Search petrol, grocery, food...">
+          </div>
+          <div class="filter-row">
+            <select id="category-filter" class="mini-select">
+              <option value="ALL">All Categories</option>
+            </select>
+            <select id="time-filter" class="mini-select">
+              <option value="ALL">All Time</option>
+              <option value="THIS_MONTH" selected>This Month</option>
+              <option value="THIS_YEAR">This Year</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="feed-header">
+          <h3>Recent Expenses</h3>
+          <span id="feed-count-tag" class="count-pill">0 items</span>
+        </div>
+
+        <div id="activity-feed-list" class="activity-feed">
+          <!-- Dynamically populated transaction cards -->
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab 3: Analytics -->
+    <div id="analytics-tab" class="tab-content">
+      <section class="analytics-section">
+        <div class="glass-card analytics-summary-card">
+          <h3>Category Spending Breakdown</h3>
+          <p class="analytics-subtitle">Where your money went this month</p>
+
+          <div id="analytics-progress-container" class="analytics-list">
+            <!-- Dynamically populated category progress bars -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab 4: Credit & Income Vault -->
+    <div id="vault-tab" class="tab-content">
+      <section class="vault-section">
+        <!-- Top Credit Summary Card -->
+        <div class="glass-card credit-summary-card vault-summary-top">
+          <div class="vault-summary-header">
+            <span class="vault-crown">💼</span>
+            <div>
+              <span class="card-label">Total Monthly Credit</span>
+              <div class="credit-amount-display">
+                <span class="credit-currency">₹</span>
+                <span id="monthly-credit-amount" class="credit-main-amount">0.00</span>
+              </div>
+              <span class="stats-badge" id="credit-count-badge">0 credit entries this month</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add New Credit Form -->
+        <div class="glass-card form-card">
+          <div class="card-title-row">
+            <h2>Add Credit Entry</h2>
+            <span class="vault-badge-tag">Paisa Aaya 🟢</span>
+          </div>
+          <form id="credit-form" autocomplete="off">
+            <div class="form-group">
+              <label for="credit-date">Date</label>
+              <div class="input-glass-wrapper">
+                <span class="input-icon" data-emoji="📆">📆</span>
+                <input type="date" id="credit-date" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="credit-amount">Amount Credited (INR ₹)</label>
+              <div class="input-glass-wrapper amount-wrapper">
+                <span class="currency-prefix income-prefix">₹</span>
+                <input type="number" id="credit-amount" step="0.01" min="0.01" placeholder="0.00" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="credit-category">Credit Category</label>
+              <div class="input-glass-wrapper">
+                <select id="credit-category" required>
+                  <!-- Populated dynamically -->
+                </select>
+                <span class="select-arrow">▼</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="credit-note">Note <span class="optional-tag">(Optional)</span></label>
+              <div class="input-glass-wrapper">
+                <span class="input-icon" data-emoji="✍️">✍️</span>
+                <input type="text" id="credit-note" placeholder="e.g. Salary, Paytm refund, Client payment..." maxlength="60">
+              </div>
+            </div>
+
+            <button type="submit" class="primary-btn credit-submit-btn">
+              <span class="btn-text">+ Add Credit Entry</span>
+              <span class="btn-shine"></span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Credit Activity Feed -->
+        <div class="glass-card">
+          <div class="credit-feed-header">
+            <h3>Credit History</h3>
+            <span id="credit-feed-count" class="count-pill">0 items</span>
+          </div>
+          <div id="credit-activity-feed-list" class="activity-feed">
+            <!-- Dynamically populated credit entries -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Discrete Ledger Footer Button -->
+    <footer class="app-footer">
+      <button id="ledger-btn" class="secret-vault-badge" title="Private Ledger">
+        <span class="secret-icon">📋</span>
+        <span class="secret-text">Ledger</span>
+      </button>
+    </footer>
+
+  </div> <!-- End App Container -->
+
+  <!-- Modal: Edit Expense -->
+  <div id="edit-modal" class="modal-overlay">
+    <div class="glass-card modal-container">
+      <div class="modal-header">
+        <h3>Edit Expense</h3>
+        <button class="close-modal-btn" data-close="edit-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="edit-expense-form">
+          <input type="hidden" id="edit-tx-id">
+
+          <div class="form-group">
+            <label for="edit-expense-date">Date</label>
+            <div class="input-glass-wrapper">
+              <input type="date" id="edit-expense-date" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-expense-amount">Amount (INR ₹)</label>
+            <div class="input-glass-wrapper amount-wrapper">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="edit-expense-amount" step="0.01" min="0.01" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-expense-category">Category</label>
+            <div class="input-glass-wrapper">
+              <select id="edit-expense-category" required></select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-expense-note">Note</label>
+            <div class="input-glass-wrapper">
+              <input type="text" id="edit-expense-note" placeholder="Transaction note" maxlength="60">
+            </div>
+          </div>
+
+          <div class="modal-btn-row">
+            <button type="submit" class="primary-btn">Save Changes</button>
+            <button type="button" id="delete-edit-tx-btn" class="danger-btn">Delete Expense</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Category Management -->
+  <div id="category-modal" class="modal-overlay">
+    <div class="glass-card modal-container">
+      <div class="modal-header">
+        <h3>Category Manager</h3>
+        <button class="close-modal-btn" data-close="category-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="custom-category-form">
+          <div class="form-group">
+            <label>Select Emoji (iOS / Samsung HD Package)</label>
+            <div class="emoji-category-tabs" id="emoji-cat-tabs">
+              <button type="button" class="emoji-tab-btn active" data-cat="all">All</button>
+              <button type="button" class="emoji-tab-btn" data-cat="fuel">⛽ Fuel & Car</button>
+              <button type="button" class="emoji-tab-btn" data-cat="food">🍔 Food</button>
+              <button type="button" class="emoji-tab-btn" data-cat="bills">⚡ Bills</button>
+              <button type="button" class="emoji-tab-btn" data-cat="life">🛍️ Style</button>
+              <button type="button" class="emoji-tab-btn" data-cat="money">💰 Money</button>
+            </div>
+            <div class="emoji-selector-grid" id="emoji-picker-grid"></div>
+            <div class="input-glass-wrapper custom-emoji-wrapper">
+              <span class="input-icon" id="selected-emoji-preview">⛽</span>
+              <input type="text" id="custom-emoji-input" placeholder="Or type any emoji (e.g. ⛽)" maxlength="4" value="⛽">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="category-name-input">Category Name</label>
+            <div class="input-glass-wrapper">
+              <input type="text" id="category-name-input" placeholder="e.g. Petrol, Bike Fuel, Swiggy..." required maxlength="30">
+            </div>
+          </div>
+
+          <button type="submit" class="primary-btn">Create Category</button>
+        </form>
+
+        <hr class="glass-divider">
+
+        <h4 class="sub-heading">Existing Categories</h4>
+        <div id="categories-list-chips" class="categories-chips-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Delete Confirmation -->
+  <div id="delete-confirm-modal" class="modal-overlay">
+    <div class="glass-card modal-container confirmation-modal-container">
+      <div class="modal-header danger-header">
+        <h3>⚠️ Confirm Deletion</h3>
+        <button class="close-modal-btn" data-close="delete-confirm-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="confirm-message">Are you sure you want to delete this transaction? It will be marked as INACTIVE in Google Sheets and removed from your balance.</p>
+        <div class="confirm-tx-preview glass-card" id="confirm-tx-preview">
+          <!-- Populated dynamically via JS -->
+        </div>
+        <div class="modal-footer-actions">
+          <button type="button" class="secondary-btn" data-close="delete-confirm-modal">Cancel</button>
+          <button type="button" id="confirm-delete-btn" class="danger-btn">Yes, Delete Entry</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Google Drive & Sheets Auto-Sync Settings -->
+  <div id="settings-modal" class="modal-overlay">
+    <div class="glass-card modal-container settings-modal-container">
+      <div class="modal-header">
+        <h3>Google Drive Auto-Sync</h3>
+        <button type="button" class="close-modal-btn" data-close="settings-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Drive Connection Status Card -->
+        <div id="drive-connected-card" class="drive-sync-card">
+          <div class="drive-card-header">
+            <div class="drive-icon-bubble">📊</div>
+            <div class="drive-card-info">
+              <h4 id="drive-sheet-name">Liquid Spend Expenses (INR ₹)</h4>
+              <p id="drive-sync-status-text" class="status-badge-text">🟢 Auto-Synced with Google Drive</p>
+            </div>
+          </div>
+
+          <div class="drive-card-details">
+            <a id="open-sheet-link" href="#" target="_blank" rel="noopener" class="sheet-link-btn hidden">
+              <span>📄 Open Connected Google Sheet</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+
+          <div class="drive-card-actions">
+            <button type="button" id="pull-sync-btn" class="primary-btn glow-sync-btn">🔄 Sync Now from Drive</button>
+          </div>
+        </div>
+
+        <hr class="glass-divider">
+
+        <div class="settings-modal-footer">
+          <button type="button" class="secondary-btn full-width-btn" data-close="settings-modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Ultra-Premium Google Auth Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="glass-card modal-container auth-modal-card">
+      <div class="modal-header border-bottom-0">
+        <div class="auth-modal-logo">✨</div>
+        <button class="close-modal-btn" data-close="auth-modal">&times;</button>
+      </div>
+
+      <div class="modal-body auth-modal-body">
+        <h3 class="auth-modal-title">Sign in to Liquid Spend</h3>
+        <p class="auth-modal-sub">Securely connect your Google Account for realtime Google Sheets sync, cloud backup, and cross-device tracking.</p>
+
+        <div class="auth-modal-badges">
+          <span class="auth-badge">📊 Live Sheets Sync</span>
+          <span class="auth-badge">🔒 100% Private Drive</span>
+          <span class="auth-badge">⚡ Offline PWA</span>
+        </div>
+
+        <button id="modal-google-signin-btn" class="primary-btn google-auth-modal-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+          <span>Sign in with Google</span>
+        </button>
+
+        <button type="button" class="secondary-btn close-auth-modal-btn" data-close="auth-modal">Continue in Guest Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="app.js"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('Liquid Spend SW registered'))
+          .catch((e) => console.log('SW error:', e));
+      });
+    }
+  </script>
+</body>
+</html>
