@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,7 +8,8 @@
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
   <!-- PWA -->
@@ -22,6 +24,7 @@
   <!-- Google Identity Services SDK -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
+
 <body>
   <!-- Ambient Liquid Mesh Background Blobs -->
   <div class="ambient-bg">
@@ -33,7 +36,7 @@
 
   <!-- Mobile App Container Shell -->
   <div class="app-container">
-    
+
     <!-- Header -->
     <header class="app-header">
       <div class="brand">
@@ -64,9 +67,9 @@
                 <span class="dropdown-email" id="dropdown-user-email">Not signed in</span>
               </div>
             </div>
-            
+
             <hr class="glass-divider">
-            
+
             <!-- Connection Status Badge inside Dropdown -->
             <div class="dropdown-sheet-status status-offline" id="dropdown-sheet-status">
               <span class="status-dot"></span>
@@ -75,12 +78,29 @@
 
             <div class="dropdown-actions">
               <button id="google-signin-btn" class="primary-btn google-auth-action-btn">
-                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                  <path fill="#4285F4"
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853"
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05"
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                  <path fill="#EA4335"
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                </svg>
                 <span>Sign in with Google</span>
               </button>
               <button id="dropdown-settings-btn" class="secondary-btn dropdown-action-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3" />
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
                 <span>Sheet Settings</span>
+              </button>
+              <button id="dropdown-repair-btn" class="secondary-btn dropdown-action-item" style="color: #4f46e5;">
+                <span>🛠️ Format & Repair Sheet</span>
               </button>
               <button id="signout-btn" class="secondary-btn danger-text hidden">Sign Out</button>
             </div>
@@ -147,6 +167,10 @@
         <span class="tab-icon" data-emoji="📊">📊</span>
         <span>Analytics</span>
       </button>
+      <button class="tab-btn" data-tab="trips-tab">
+        <span class="tab-icon" data-emoji="✈️">✈️</span>
+        <span>Trips</span>
+      </button>
     </div>
 
     <!-- Tab 1: Expense Entry Form -->
@@ -159,16 +183,30 @@
           </div>
 
           <form id="expense-form" autocomplete="off">
-            <!-- Date Selector -->
-            <div class="form-group">
-              <label for="expense-date">Date</label>
-              <div class="input-glass-wrapper">
-                <span class="input-icon" data-emoji="📆">📆</span>
-                <input type="date" id="expense-date" required>
+            <!-- Row 1: Date (Smaller) + Category -->
+            <div class="form-row-grid">
+              <div class="form-group date-group">
+                <label for="expense-date">Date</label>
+                <div class="input-glass-wrapper">
+                  <span class="input-icon" data-emoji="📆">📆</span>
+                  <input type="date" id="expense-date" required>
+                </div>
+              </div>
+
+              <div class="form-group category-group relative-dropdown-container">
+                <label for="expense-category">Category</label>
+                <div class="input-glass-wrapper custom-select-trigger" id="category-picker-trigger">
+                  <span id="selected-category-display" class="trigger-display">Select Category</span>
+                  <select id="expense-category" required style="display:none;"></select>
+                  <span class="select-arrow">▾</span>
+                </div>
+                <div id="inline-category-dropdown" class="glass-inline-dropdown hidden">
+                  <div id="inline-category-options-list" class="inline-options-list"></div>
+                </div>
               </div>
             </div>
 
-            <!-- Amount Field -->
+            <!-- Row 2: Amount Field -->
             <div class="form-group">
               <label for="expense-amount">Amount (INR ₹)</label>
               <div class="input-glass-wrapper amount-wrapper">
@@ -177,23 +215,28 @@
               </div>
             </div>
 
-            <!-- Category Selector -->
-            <div class="form-group">
-              <label for="expense-category">Category</label>
-              <div class="input-glass-wrapper">
-                <select id="expense-category" required>
-                  <!-- Populated dynamically -->
-                </select>
-                <span class="select-arrow">▼</span>
+            <!-- Row 3: Note Field + Trip Selector -->
+            <div class="form-row-grid">
+              <div class="form-group">
+                <label for="expense-note">Note <span class="optional-tag">(Optional)</span></label>
+                <div class="input-glass-wrapper">
+                  <span class="input-icon" data-emoji="✍️">✍️</span>
+                  <input type="text" id="expense-note" placeholder="e.g. Petrol, Swiggy..." maxlength="60">
+                </div>
               </div>
-            </div>
 
-            <!-- Note Field -->
-            <div class="form-group">
-              <label for="expense-note">Note <span class="optional-tag">(Optional)</span></label>
-              <div class="input-glass-wrapper">
-                <span class="input-icon" data-emoji="✍️">✍️</span>
-                <input type="text" id="expense-note" placeholder="e.g. Petrol fill-up, Swiggy, Electricity..." maxlength="60">
+              <div class="form-group relative-dropdown-container">
+                <label for="expense-trip">Trip <span class="optional-tag">(Optional)</span></label>
+                <div class="input-glass-wrapper custom-select-trigger" id="trip-picker-trigger">
+                  <span id="selected-trip-display" class="trigger-display">✈️ None (Daily Expense)</span>
+                  <select id="expense-trip" style="display:none;">
+                    <option value="">None (Daily Expense)</option>
+                  </select>
+                  <span class="select-arrow">▾</span>
+                </div>
+                <div id="inline-trip-dropdown" class="glass-inline-dropdown hidden">
+                  <div id="inline-trip-options-list" class="inline-options-list"></div>
+                </div>
               </div>
             </div>
 
@@ -242,12 +285,62 @@
     <div id="analytics-tab" class="tab-content">
       <section class="analytics-section">
         <div class="glass-card analytics-summary-card">
-          <h3>Category Spending Breakdown</h3>
-          <p class="analytics-subtitle">Where your money went this month</p>
+          <div class="analytics-header-row"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="font-size: 1.1rem; margin: 0; font-weight: 800;">Category Spending Breakdown</h3>
+              <p class="analytics-subtitle" style="margin: 2px 0 0 0; font-size: 0.8rem; opacity: 0.8;">Category-wise percentage & total spending</p>
+            </div>
+            <select id="analytics-time-filter" class="mini-select">
+              <option value="THIS_MONTH" selected>This Month</option>
+              <option value="THIS_YEAR">This Year</option>
+              <option value="ALL">All Time</option>
+            </select>
+          </div>
 
           <div id="analytics-progress-container" class="analytics-list">
             <!-- Dynamically populated category progress bars -->
           </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab 5: Trips Management Tab -->
+    <div id="trips-tab" class="tab-content">
+      <section class="trips-section">
+        <!-- Active Trip Alert Banner (If trip is active) -->
+        <div id="active-trip-banner" class="glass-card active-trip-banner hidden">
+          <div class="active-trip-badge">🟢 ONGOING TRIP</div>
+          <div class="active-trip-info">
+            <h3 id="active-trip-title">Indore Visit #1</h3>
+            <p id="active-trip-sub">📍 Indore • Started 10 Aug • Last activity today</p>
+          </div>
+          <div class="active-trip-stats">
+            <div class="trip-stat-pill">
+              <span class="stat-lbl">Total Spent</span>
+              <span class="stat-val" id="active-trip-total">₹0.00</span>
+            </div>
+            <button type="button" id="active-trip-finish-btn" class="secondary-btn finish-trip-btn">
+              <span>Finish Trip 🏁</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Trips Header & Create Button -->
+        <div class="trips-header-card glass-card">
+          <div class="card-title-row">
+            <div>
+              <h2 style="margin:0; font-size:1.2rem;">✈️ My Trips</h2>
+              <p class="subtitle" style="font-size:0.8rem; margin:2px 0 0 0; opacity:0.8;">Track expenses date-wise for
+                every vacation or city visit</p>
+            </div>
+            <button type="button" id="create-trip-modal-btn" class="primary-btn mini-btn">+ New Trip</button>
+          </div>
+        </div>
+
+        <!-- Trips List Container -->
+        <div id="trips-list-container" class="trips-list-grid">
+          <!-- Dynamically populated trip cards -->
         </div>
       </section>
     </div>
@@ -277,14 +370,28 @@
             <span class="vault-badge-tag">Paisa Aaya 🟢</span>
           </div>
           <form id="credit-form" autocomplete="off">
-            <div class="form-group">
-              <label for="credit-date">Date</label>
-              <div class="input-glass-wrapper">
-                <span class="input-icon" data-emoji="📆">📆</span>
-                <input type="date" id="credit-date" required>
+            <!-- Row 1: Date (Left) + Credit Category (Right) -->
+            <div class="form-row-grid">
+              <div class="form-group date-group">
+                <label for="credit-date">Date</label>
+                <div class="input-glass-wrapper">
+                  <span class="input-icon" data-emoji="📆">📆</span>
+                  <input type="date" id="credit-date" required>
+                </div>
+              </div>
+
+              <div class="form-group category-group">
+                <label for="credit-category">Credit Category</label>
+                <div class="input-glass-wrapper">
+                  <select id="credit-category" required>
+                    <!-- Populated dynamically -->
+                  </select>
+                  <span class="select-arrow">▾</span>
+                </div>
               </div>
             </div>
 
+            <!-- Row 2: Amount Field -->
             <div class="form-group">
               <label for="credit-amount">Amount Credited (INR ₹)</label>
               <div class="input-glass-wrapper amount-wrapper">
@@ -293,16 +400,7 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="credit-category">Credit Category</label>
-              <div class="input-glass-wrapper">
-                <select id="credit-category" required>
-                  <!-- Populated dynamically -->
-                </select>
-                <span class="select-arrow">▼</span>
-              </div>
-            </div>
-
+            <!-- Row 3: Note Field -->
             <div class="form-group">
               <label for="credit-note">Note <span class="optional-tag">(Optional)</span></label>
               <div class="input-glass-wrapper">
@@ -414,14 +512,16 @@
             <div class="emoji-selector-grid" id="emoji-picker-grid"></div>
             <div class="input-glass-wrapper custom-emoji-wrapper">
               <span class="input-icon" id="selected-emoji-preview">⛽</span>
-              <input type="text" id="custom-emoji-input" placeholder="Or type any emoji (e.g. ⛽)" maxlength="4" value="⛽">
+              <input type="text" id="custom-emoji-input" placeholder="Or type any emoji (e.g. ⛽)" maxlength="4"
+                value="⛽">
             </div>
           </div>
 
           <div class="form-group">
             <label for="category-name-input">Category Name</label>
             <div class="input-glass-wrapper">
-              <input type="text" id="category-name-input" placeholder="e.g. Petrol, Bike Fuel, Swiggy..." required maxlength="30">
+              <input type="text" id="category-name-input" placeholder="e.g. Petrol, Bike Fuel, Swiggy..." required
+                maxlength="30">
             </div>
           </div>
 
@@ -444,7 +544,8 @@
         <button class="close-modal-btn" data-close="delete-confirm-modal">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="confirm-message">Are you sure you want to delete this transaction? It will be marked as INACTIVE in Google Sheets and removed from your balance.</p>
+        <p class="confirm-message">Are you sure you want to delete this transaction? It will be marked as INACTIVE in
+          Google Sheets and removed from your balance.</p>
         <div class="confirm-tx-preview glass-card" id="confirm-tx-preview">
           <!-- Populated dynamically via JS -->
         </div>
@@ -478,16 +579,50 @@
           <div class="drive-card-details">
             <a id="open-sheet-link" href="#" target="_blank" rel="noopener" class="sheet-link-btn hidden">
               <span>📄 Open Connected Google Sheet</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
             </a>
           </div>
 
-          <div class="drive-card-actions">
+          <div class="drive-card-actions" style="display:flex; flex-direction:column; gap:8px;">
             <button type="button" id="pull-sync-btn" class="primary-btn glow-sync-btn">🔄 Sync Now from Drive</button>
+            <button type="button" id="repair-sheet-btn" class="secondary-btn">🛠️ Format & Repair Sheet Headers</button>
           </div>
         </div>
 
         <hr class="glass-divider">
+
+        <form id="settings-form">
+          <div class="form-group">
+            <label for="apps-script-url-input">⚡ Permanent Lifetime Web App URL (Apps Script)</label>
+            <div class="input-glass-wrapper">
+              <span class="input-icon">🌐</span>
+              <input type="url" id="apps-script-url-input" placeholder="https://script.google.com/macros/s/.../exec">
+            </div>
+            <p class="field-help">100% Permanent Zero-Expiry Sync. Works forever on mobile & web!</p>
+          </div>
+          <button type="submit" class="primary-btn glow-sync-btn full-width-btn" style="margin-top: 8px;">Save Lifetime
+            Web App URL</button>
+        </form>
+
+        <hr class="glass-divider">
+
+        <form id="google-client-id-form">
+          <div class="form-group">
+            <label for="google-client-id-input">Google OAuth Client ID</label>
+            <div class="input-glass-wrapper">
+              <span class="input-icon">🔑</span>
+              <input type="text" id="google-client-id-input" placeholder="123456...apps.googleusercontent.com">
+            </div>
+            <p class="field-help">Get free Client ID from <a href="https://console.cloud.google.com/apis/credentials"
+                target="_blank" rel="noopener">Google Cloud Console</a>.</p>
+          </div>
+          <button type="submit" class="secondary-btn full-width-btn" style="margin-top: 8px;">Save OAuth Client
+            ID</button>
+        </form>
 
         <div class="settings-modal-footer">
           <button type="button" class="secondary-btn full-width-btn" data-close="settings-modal">Close</button>
@@ -506,7 +641,8 @@
 
       <div class="modal-body auth-modal-body">
         <h3 class="auth-modal-title">Sign in to Liquid Spend</h3>
-        <p class="auth-modal-sub">Securely connect your Google Account for realtime Google Sheets sync, cloud backup, and cross-device tracking.</p>
+        <p class="auth-modal-sub">Securely connect your Google Account for realtime Google Sheets sync, cloud backup,
+          and cross-device tracking.</p>
 
         <div class="auth-modal-badges">
           <span class="auth-badge">📊 Live Sheets Sync</span>
@@ -515,11 +651,97 @@
         </div>
 
         <button id="modal-google-signin-btn" class="primary-btn google-auth-modal-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24">
+            <path fill="#4285F4"
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+            <path fill="#34A853"
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+            <path fill="#FBBC05"
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+            <path fill="#EA4335"
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+          </svg>
           <span>Sign in with Google</span>
         </button>
 
-        <button type="button" class="secondary-btn close-auth-modal-btn" data-close="auth-modal">Continue in Guest Mode</button>
+        <button type="button" class="secondary-btn close-auth-modal-btn" data-close="auth-modal">Continue in Guest
+          Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Create New Trip -->
+  <div id="new-trip-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-container">
+      <div class="modal-header">
+        <h3 style="margin:0; font-size:1.1rem; font-weight:700;">✈️ Create New Trip</h3>
+        <button type="button" class="close-modal-btn" data-close="new-trip-modal">&times;</button>
+      </div>
+      <form id="new-trip-form" autocomplete="off">
+        <div class="modal-body" style="display:flex; flex-direction:column; gap:16px;">
+          <div class="form-group">
+            <label for="trip-destination">City / Destination</label>
+            <div class="input-glass-wrapper">
+              <span class="input-icon" data-emoji="📍">📍</span>
+              <input type="text" id="trip-destination" placeholder="e.g. Indore, Manali, Goa..." required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="trip-name">Trip Name <span class="optional-tag">(Optional)</span></label>
+            <div class="input-glass-wrapper">
+              <span class="input-icon" data-emoji="🏷️">🏷️</span>
+              <input type="text" id="trip-name" placeholder="Auto-generated if left blank (e.g. Indore Visit #1)">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
+          <button type="button" class="secondary-btn" data-close="new-trip-modal">Cancel</button>
+          <button type="submit" class="primary-btn">Create & Start Trip 🚀</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Trip Details Modal -->
+  <div id="trip-details-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-container" style="max-width:520px; width:92%;">
+      <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="modal-title-with-badge" style="display:flex; align-items:center; gap:8px;">
+          <h3 id="trip-detail-name" style="margin:0; font-size:1.1rem; font-weight:700;">Indore Visit #1</h3>
+          <span id="trip-detail-status-badge" class="trip-status-badge">Active 🟢</span>
+        </div>
+        <button type="button" class="close-modal-btn" data-close="trip-details-modal">&times;</button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:14px; margin-top:12px;">
+        <div class="trip-detail-summary-grid">
+          <div class="trip-summary-box">
+            <span class="box-lbl">Total Spent</span>
+            <span class="box-val" id="trip-detail-total">₹0.00</span>
+          </div>
+          <div class="trip-summary-box">
+            <span class="box-lbl">Daily Avg</span>
+            <span class="box-val" id="trip-detail-avg">₹0.00/day</span>
+          </div>
+          <div class="trip-summary-box">
+            <span class="box-lbl">Duration</span>
+            <span class="box-val" id="trip-detail-duration">0 Days</span>
+          </div>
+        </div>
+        <div class="trip-meta-info" id="trip-detail-meta" style="font-size:0.82rem; color:var(--text-secondary);">
+          📍 Destination: Indore • Dates: 10 Aug 2026 - 14 Aug 2026
+        </div>
+        <hr class="glass-divider" style="margin: 8px 0;">
+        <h4 style="font-size: 0.92rem; font-weight: 700; margin: 0; color: var(--text-primary);">📅 Date-wise Expense
+          Timeline</h4>
+        <div id="trip-timeline-container" class="trip-timeline-list"
+          style="max-height: 240px; overflow-y: auto; padding-right: 4px;">
+          <!-- Dynamically populated date-wise items -->
+        </div>
+      </div>
+      <div class="modal-footer"
+        style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+        <button type="button" id="delete-trip-btn" class="secondary-btn danger-text">Delete Trip</button>
+        <button type="button" class="secondary-btn" data-close="trip-details-modal">Close</button>
       </div>
     </div>
   </div>
@@ -527,17 +749,18 @@
   <!-- Toast Notification Container -->
   <div id="toast-container" class="toast-container"></div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=5.0"></script>
 
   <!-- Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(() => console.log('Liquid Spend SW registered'))
-          .catch((e) => console.log('SW error:', e));
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
       });
     }
   </script>
 </body>
+
 </html>

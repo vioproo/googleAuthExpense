@@ -1,36 +1,23 @@
-const CACHE_NAME = "liquid-spend-v1";
-const ASSETS = [
-  "./index.html",
-  "./styles.css",
-  "./app.js",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./manifest.json"
-];
+const CACHE_NAME = "liquid-spend-v2";
 
-// Install — cache all assets
+// Install — immediate skip waiting
 self.addEventListener("install", (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  );
   self.skipWaiting();
 });
 
-// Activate — delete old caches
+// Activate — clear all old cache storage
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
-      )
+      Promise.all(keys.map((k) => caches.delete(k)))
     )
   );
   self.clients.claim();
 });
 
-// Fetch — serve from cache, fallback to network
+// Fetch — Network first, fallback to cache
 self.addEventListener("fetch", (e) => {
   e.respondWith(
-    caches.match(e.request).then((cached) => cached || fetch(e.request))
+    fetch(e.request).catch(() => caches.match(e.request))
   );
 });
