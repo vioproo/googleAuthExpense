@@ -31,10 +31,7 @@ const EMOJI_CATEGORIES = {
 };
 
 // Initial Sample Data (for fresh preview)
-const SAMPLE_EXPENSES = [
-  { id: "tx-1", type: "DEBIT", date: new Date().toISOString().split("T")[0], category: "Fuel & Petrol", emoji: "⛽", note: "Full Tank Speed Petrol", amount: 1200.00, timestamp: Date.now() - 3600000 },
-  { id: "tx-2", type: "DEBIT", date: new Date().toISOString().split("T")[0], category: "Food & Dining", emoji: "🍔", note: "Team Lunch at Restaurant", amount: 650.00, timestamp: Date.now() - 7200000 }
-];
+const SAMPLE_EXPENSES = [];
 
 const SAMPLE_CREDITS = [];
 
@@ -1829,6 +1826,7 @@ class ExpenseApp {
     if (!this.accessToken || Date.now() >= expiresAt) {
       if (this.tokenClient) {
         try {
+          this.isSilentRenewal = true;
           this.tokenClient.requestAccessToken({ prompt: "none" });
           return true;
         } catch (e) {
@@ -1840,12 +1838,22 @@ class ExpenseApp {
   }
 
   async syncTransactionToGoogleSheets(tx, silent = false) {
-    if (this.accessToken && this.driveSheetId) {
-      try {
-        await this.ensureValidAccessToken();
+    if (!tx || !tx.id) return;
+    if (!this.syncingTxIds) this.syncingTxIds = new Set();
 
-        // Check if ID already exists in Google Sheet to prevent duplicates
-        if (tx.id) {
+    if (this.syncingTxIds.has(tx.id)) {
+      console.log(`Sync already in progress for transaction ${tx.id}. Skipping duplicate call.`);
+      return;
+    }
+
+    this.syncingTxIds.add(tx.id);
+
+    try {
+      if (this.accessToken && this.driveSheetId) {
+        try {
+          await this.ensureValidAccessToken();
+
+          // Check if ID already exists in Google Sheet to prevent duplicates
           const checkRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${this.driveSheetId}/values/A1:A1000`, {
             headers: { Authorization: `Bearer ${this.accessToken}` }
           });
@@ -1857,34 +1865,9 @@ class ExpenseApp {
               return;
             }
           }
-        }
 
-        const formattedTimestamp = this.getFormattedTimestamp();
-        let res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${this.driveSheetId}/values/A1:append?valueInputOption=USER_ENTERED`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${this.accessToken}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            values: [[
-              tx.id || "",
-              tx.type || "DEBIT",
-              tx.date || "",
-              tx.category || "",
-              tx.emoji || "🧾",
-              tx.note || "",
-              tx.amount || 0,
-              tx.tripName || "-",
-              formattedTimestamp,
-              "ACTIVE"
-            ]]
-          })
-        });
-
-        if (res.status === 401) {
-          await this.ensureValidAccessToken();
-          res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${this.driveSheetId}/values/A1:append?valueInputOption=USER_ENTERED`, {
+          const formattedTimestamp = this.getFormattedTimestamp();
+          let res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${this.driveSheetId}/values/A1:append?valueInputOption=USER_ENTERED`, {
             method: "POST",
             headers: {
               Authorization: `Bearer ${this.accessToken}`,
@@ -1899,48 +1882,76 @@ class ExpenseApp {
                 tx.emoji || "🧾",
                 tx.note || "",
                 tx.amount || 0,
+                tx.tripName || "-",
                 formattedTimestamp,
                 "ACTIVE"
               ]]
             })
           });
-        }
 
-        const data = await res.json();
-        if (res.ok) {
-          if (!silent) this.showToast("Synced to your Google Drive Sheet! 📊");
-          return;
-        } else {
-          console.warn("Drive Sheets API Sync Error:", data);
-          if (res.status === 404 || (data && data.error && (data.error.code === 404 || String(data.error.message).toLowerCase().includes("not found")))) {
-            console.warn("Drive Sheet ID not found. Relinking Google Sheet...");
-            localStorage.removeItem("liquid_drive_sheet_id");
-            this.driveSheetId = "";
-            await this.autoConnectGoogleDriveSheet();
+          if (res.status === 401) {
+            await this.ensureValidAccessToken();
+            res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${this.driveSheetId}/values/A1:append?valueInputOption=USER_ENTERED`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                values: [[
+                  tx.id || "",
+                  tx.type || "DEBIT",
+                  tx.date || "",
+                  tx.category || "",
+                  tx.emoji || "🧾",
+                  tx.note || "",
+                  tx.amount || 0,
+                  tx.tripName || "-",
+                  formattedTimestamp,
+                  "ACTIVE"
+                ]]
+              })
+            });
+          }
+
+          const data = await res.json();
+          if (res.ok) {
+            if (!silent) this.showToast("Synced to your Google Drive Sheet! 📊");
             return;
+          } else {
+            console.warn("Drive Sheets API Sync Error:", data);
+            if (res.status === 404 || (data && data.error && (data.error.code === 404 || String(data.error.message).toLowerCase().includes("not found")))) {
+              console.warn("Drive Sheet ID not found. Relinking Google Sheet...");
+              localStorage.removeItem("liquid_drive_sheet_id");
+              this.driveSheetId = "";
+              await this.autoConnectGoogleDriveSheet();
+              return;
+            }
+            if (data && data.error && data.error.message && !silent) {
+              this.showToast(`Sheets Sync: ${data.error.message}`);
+            }
           }
-          if (data && data.error && data.error.message && !silent) {
-            this.showToast(`Sheets Sync: ${data.error.message}`);
-          }
+        } catch (err) {
+          console.error("Drive Sheets REST sync failed:", err);
         }
-      } catch (err) {
-        console.error("Drive Sheets REST sync failed:", err);
       }
-    }
 
-    if (!this.appsScriptUrl) return;
+      if (!this.appsScriptUrl) return;
 
-    try {
-      await fetch(this.appsScriptUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "ADD", ...tx })
-      });
-      if (!silent) this.showToast("Synced to Google Sheets! 📊");
-    } catch (err) {
-      console.error("Google Sheets sync failed:", err);
-      if (!silent) this.showToast("Sync error. Saved locally.");
+      try {
+        await fetch(this.appsScriptUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "ADD", ...tx })
+        });
+        if (!silent) this.showToast("Synced to Google Sheets! 📊");
+      } catch (err) {
+        console.error("Google Sheets sync failed:", err);
+        if (!silent) this.showToast("Sync error. Saved locally.");
+      }
+    } finally {
+      this.syncingTxIds.delete(tx.id);
     }
   }
 
@@ -2289,6 +2300,9 @@ class ExpenseApp {
     localStorage.setItem("liquid_google_access_token", this.accessToken);
     localStorage.setItem("liquid_google_token_expires", this.tokenExpiresAt);
 
+    const isSilent = this.isSilentRenewal;
+    this.isSilentRenewal = false;
+
     try {
       const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
         headers: { Authorization: `Bearer ${this.accessToken}` }
@@ -2307,9 +2321,13 @@ class ExpenseApp {
         this.saveToStorage("liquid_user_profile", this.userProfile);
         if (this.userDropdown) this.userDropdown.classList.add("hidden");
         this.updateUserProfileUI();
-        this.showToast(`Welcome, ${this.userProfile.firstName}! Logged in with Google. 👤`);
+        if (!isSilent) {
+          this.showToast(`Welcome, ${this.userProfile.firstName}! Logged in with Google. 👤`);
+        }
 
-        this.autoConnectGoogleDriveSheet();
+        if (!isSilent || !this.driveSheetId) {
+          this.autoConnectGoogleDriveSheet();
+        }
       }
     } catch (err) {
       console.error("Failed to fetch Google profile:", err);
@@ -2317,7 +2335,8 @@ class ExpenseApp {
   }
 
   async syncAllUnsyncedTransactionsToGoogleSheets() {
-    if (!this.accessToken || !this.driveSheetId) return;
+    if (!this.accessToken || !this.driveSheetId || this.isSyncingAll) return;
+    this.isSyncingAll = true;
 
     try {
       const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${this.driveSheetId}/values/A1:A1000`, {
@@ -2335,18 +2354,23 @@ class ExpenseApp {
       const unsynced = allTxs.filter(tx => tx.id && !existingIds.has(String(tx.id).trim()));
 
       if (unsynced.length > 0) {
+        let syncedCount = 0;
         for (const tx of unsynced) {
           await this.syncTransactionToGoogleSheets(tx, true);
+          syncedCount++;
         }
-        this.showToast(`Synced ${unsynced.length} new entries to your Google Sheet! 📊`);
+        this.showToast(`Synced ${syncedCount} new entries to your Google Sheet! 📊`);
       }
     } catch (err) {
       console.warn("Unsynced transactions sync check error:", err);
+    } finally {
+      this.isSyncingAll = false;
     }
   }
 
   async autoConnectGoogleDriveSheet() {
-    if (!this.accessToken) return;
+    if (!this.accessToken || this.isAutoConnecting) return;
+    this.isAutoConnecting = true;
 
     try {
       const searchRes = await fetch(
@@ -2410,6 +2434,8 @@ class ExpenseApp {
       }
     } catch (err) {
       console.error("Auto-connect Drive error:", err);
+    } finally {
+      this.isAutoConnecting = false;
     }
   }
 
